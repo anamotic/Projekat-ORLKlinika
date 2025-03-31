@@ -1,4 +1,4 @@
-namespace AppBackend.Models
+namespace ORLKlinika.Web.Models
 {
     public class ErrorViewModel
     {

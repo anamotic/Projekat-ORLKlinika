@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORLKlinika.Web", "AppBackend\ORLKlinika.Web.csproj", "{EEE913AB-7BD4-47F1-A86F-C7378884BE32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain", "App.Domain\App.Domain.csproj", "{77463C5E-3400-4F80-8113-D104AB935B59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Domain", "App.Domain\App.Domain.csproj", "{77463C5E-3400-4F80-8113-D104AB935B59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ServiceLayer", "App.ServiceLayer\App.ServiceLayer.csproj", "{5FBA2B45-CAED-4A1E-AB9C-9DF9522AA5B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.ServiceLayer", "App.ServiceLayer\App.ServiceLayer.csproj", "{5FBA2B45-CAED-4A1E-AB9C-9DF9522AA5B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Infrastructure", "App.Infrastructure\App.Infrastructure.csproj", "{7F508D22-F887-4189-8617-5D338CFBA198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Infrastructure", "App.Infrastructure\App.Infrastructure.csproj", "{7F508D22-F887-4189-8617-5D338CFBA198}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ORLKlinika.Web", "ORLKlinika.Web\ORLKlinika.Web.csproj", "{6CAFE6DC-4A06-48D7-B5CD-C9945A1FEEF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EEE913AB-7BD4-47F1-A86F-C7378884BE32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEE913AB-7BD4-47F1-A86F-C7378884BE32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEE913AB-7BD4-47F1-A86F-C7378884BE32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEE913AB-7BD4-47F1-A86F-C7378884BE32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{77463C5E-3400-4F80-8113-D104AB935B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77463C5E-3400-4F80-8113-D104AB935B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77463C5E-3400-4F80-8113-D104AB935B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{7F508D22-F887-4189-8617-5D338CFBA198}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F508D22-F887-4189-8617-5D338CFBA198}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F508D22-F887-4189-8617-5D338CFBA198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CAFE6DC-4A06-48D7-B5CD-C9945A1FEEF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CAFE6DC-4A06-48D7-B5CD-C9945A1FEEF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CAFE6DC-4A06-48D7-B5CD-C9945A1FEEF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CAFE6DC-4A06-48D7-B5CD-C9945A1FEEF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
