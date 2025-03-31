@@ -1,0 +1,130 @@
+﻿@{
+    var currentAction = Context.Request.Path.ToString().ToLower();
+    var isPacijenti = currentAction.Contains("pacijent");
+    var isLekari = currentAction.Contains("lekar");
+    var isPocetna = currentAction.Contains("pocetna");
+    var isTermini = currentAction.Contains("termin");
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - ORL Klinika</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            background-color: #e8f5e9;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #2e7d32; 
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar a {
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #1b5e20;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 30px;
+            width: 100%;
+        }
+
+        .logout {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2e7d32;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .btn-green {
+            background-color: #388e3c;
+            color: white;
+        }
+
+        .btn-red {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+        .btn-blue {
+            background-color: #1976d2;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div>
+            @if (!isPacijenti)
+            {
+                    <a href="/Home/Index" class="@(isPocetna ? "active" : "")">Početna</a>
+            }
+            else
+            {
+                    <a href="/Home/Index">Početna stranica</a>
+            }
+            <a href="/Pacijent/Index" class="@(isPacijenti ? "active" : "")">Pacijenti</a>
+            <a href="/Termin/Index" class="@(isTermini ? "active" : "")">Termini</a>
+            <a href="/Lekar/Index" class="@(isLekari ? "active" : "")">Lekari</a>
+        </div>
+        <div class="logout">
+            <a href="/LogIn/Logout">Odjava</a>
+        </div>
+    </div>
+
+    <div class="content">
+        @RenderBody()
+    </div>
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

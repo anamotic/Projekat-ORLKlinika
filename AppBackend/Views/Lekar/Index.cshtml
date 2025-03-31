@@ -1,0 +1,25 @@
+﻿@model List<App.Domain.Lekar>
+@{
+    ViewBag.Title = "Lekari";
+    Layout = "_Layout";
+}
+
+<h1>Lekari</h1>
+
+<table>
+    <thead>
+        <tr>
+           <th>Ime i prezime</th>
+            <th>Subspecijalizacija</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var l in Model)
+        {
+                    <tr>
+                           <td> @l.ImePrezime </td>
+                        <td>@l.Subspecijalizacija.ToString()</td>
+                    </tr>
+        }
+    </tbody>
+</table>

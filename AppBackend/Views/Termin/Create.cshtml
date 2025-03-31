@@ -1,0 +1,170 @@
+﻿@using Newtonsoft.Json
+@model App.ServiceLayer.DTOs.ZakaziTerminDto
+@{
+    ViewBag.Title = "Dodaj termin";
+    Layout = null;
+    var zauzetiTerminiJson = JsonConvert.SerializeObject(ViewBag.ZauzetiTermini);
+    var uslugeSubspecJson = JsonConvert.SerializeObject(ViewBag.UslugeSubspec);
+}
+
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodaj novi termin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #638163;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container-form {
+            background-color: #88A988;
+            padding: 30px;
+            border-radius: 10px;
+            width: 50%;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 45px;
+            font-size: 18px;
+        }
+
+        .btn-green {
+            background-color: #28A745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            font-size: 18px;
+        }
+
+        .btn-gray {
+            background-color: gray;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            font-size: 18px;
+        }
+
+        .alert-danger {
+            background-color: #dc3545;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-form">
+    <h2 class="text-center">Dodaj novi termin</h2>
+
+    <div id="errorMessage" class="alert-danger d-none"></div>
+
+    <form id="terminForma" asp-action="Create" method="post">
+        <div class="mb-3">
+            <label>Pacijent</label>
+            <select asp-for="PacijentId" asp-items="@(new SelectList(ViewBag.Pacijenti, "Id", "ImePrezime"))" class="form-control" required></select>
+        </div>
+
+        <div class="mb-3">
+            <label>Usluga</label>
+            <select asp-for="UslugaId" class="form-control" id="UslugaSelect" required>
+                    @foreach (var usluga in (List<App.Domain.Usluga>)ViewBag.Usluge)
+                    {
+                         <option value="@usluga.Id">@usluga.Naziv</option>
+                    }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Lekar</label>
+            <select asp-for="LekarId" class="form-control" id="LekarSelect" required>
+                    @foreach (var lekar in (List<App.Domain.Lekar>)ViewBag.Lekari)
+                    {
+                         <option value="@lekar.Id" data-sub="@lekar.Subspecijalizacija">@lekar.ImePrezime</option>
+                    }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Datum i vreme</label>
+            <input asp-for="Datum" type="datetime-local" class="form-control" required id="DatumTermina" />
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-green">Sačuvaj</button>
+            <a href="/Termin/Index" class="btn btn-gray">Otkaži</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    const zauzetiTermini = @Html.Raw(zauzetiTerminiJson);
+    const uslugeSubspec = @Html.Raw(uslugeSubspecJson);
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let now = new Date().toISOString().slice(0, 16);
+        document.getElementById("DatumTermina").setAttribute("min", now);
+
+        const lekarSelect = document.getElementById("LekarSelect");
+        const uslugaSelect = document.getElementById("UslugaSelect");
+        const forma = document.getElementById("terminForma");
+        const greska = document.getElementById("errorMessage");
+
+        const sviLekari = Array.from(lekarSelect.options).map(opt => ({
+            id: opt.value,
+            text: opt.text,
+            subspecijalizacija: opt.getAttribute("data-sub")
+        }));
+
+        uslugaSelect.addEventListener("change", function () {
+            const selectedUslugaId = parseInt(this.value);
+            const sub = uslugeSubspec.find(u => u.id === selectedUslugaId)?.sub;
+
+            lekarSelect.innerHTML = "";
+
+            sviLekari.filter(l => l.subspecijalizacija === sub).forEach(l => {
+                const opt = document.createElement("option");
+                opt.value = l.id;
+                opt.text = l.text;
+                opt.setAttribute("data-sub", l.subspecijalizacija);
+                lekarSelect.appendChild(opt);
+            });
+        });
+
+        forma.addEventListener("submit", function (e) {
+            greska.classList.add("d-none");
+            greska.innerText = "";
+
+            const izabraniLekar = parseInt(lekarSelect.value);
+            const unetiDatum = new Date(document.getElementById("DatumTermina").value);
+
+            const postojiKonflikt = zauzetiTermini.some(t =>
+                t.lekarId === izabraniLekar &&
+                Math.abs(new Date(t.datum) - unetiDatum) < 60 * 60 * 1000
+            );
+
+            if (postojiKonflikt) {
+                e.preventDefault();
+                greska.innerText = "Lekar već ima zakazan termin u ovom vremenskom periodu. Potrebno je barem 1 sat razmaka.";
+                greska.classList.remove("d-none");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

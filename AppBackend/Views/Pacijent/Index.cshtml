@@ -1,0 +1,74 @@
+﻿@model List<App.Domain.Pacijent>
+@{
+    ViewBag.Title = "Pacijenti";
+    Layout = "_Layout";
+}
+
+<h1>Pacijenti</h1>
+
+<div>
+    <label><input type="checkbox" id="chkDete" checked> Deca</label>
+    <label><input type="checkbox" id="chkOdrasli" checked> Odrasli </label>
+    <label><input type="checkbox" id="chkStari" checked> Stari </label>
+</div>
+
+<table id="pacijentiTabela">
+    <thead>
+        <tr>
+            <th>Ime i prezime</th>
+            <th>Datum rođenja</th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            int godine = DateTime.Now.Year - p.DatumRodjenja.Year;
+                    <tr data-godine="@godine">
+                        <td>
+                            <a href="/Pacijent/Karton/@p.Id">@p.Ime @p.Prezime</a>
+                        </td>
+                        <td>@p.DatumRodjenja.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            <a class="btn btn-blue" href="/Pacijent/Edit/@p.Id">Izmeni</a>
+
+                            <form asp-action="Delete" asp-route-id="@p.Id" method="post" class="delete-form" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-red">Obriši</button>
+                            </form>
+                        </td>
+                    </tr>
+        }
+    </tbody>
+</table>
+
+<div style="margin-top: 20px;">
+    <a class="btn btn-green" href="/Pacijent/Dodaj">Dodaj pacijenta</a>
+</div>
+
+@section Scripts {
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    // Potvrda za brisanje
+                    $('.delete-form').on('submit', function (e) {
+                        if (!confirm("Da li ste sigurni da želite da obrišete pacijenta?")) {
+                            e.preventDefault();
+                        }
+                    });
+
+                    // Filtar po godinama
+                    $('#chkDete, #chkOdrasli, #chkStari').on('change', function () {
+                        let dete = $('#chkDete').is(':checked');
+                        let odrasli = $('#chkOdrasli').is(':checked');
+                        let stari = $('#chkStari').is(':checked');
+
+                        $('#pacijentiTabela tbody tr').each(function () {
+                            let godine = parseInt($(this).data('godine'));
+                            let prikazi = (dete && godine < 18) || (odrasli && godine >= 18 && godine < 60) || (stari && godine >= 60);
+                            $(this).toggle(prikazi);
+                        });
+                    }).trigger('change');
+                });
+            </script>
+}

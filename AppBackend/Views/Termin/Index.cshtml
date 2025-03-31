@@ -1,0 +1,76 @@
+﻿@model List<App.Domain.Termin>
+@{
+    ViewBag.Title = "Termini";
+    Layout = "_Layout";
+}
+
+<h1>Termini</h1>
+
+<div style="margin-bottom: 15px;">
+    <button id="toggleProsli" class="btn btn-blue">Prikaži prošle termine</button>
+</div>
+
+<table id="terminiTabela">
+    <thead>
+        <tr>
+            <th>Pacijent</th>
+            <th>Datum i vreme</th>
+            <th>Usluga</th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in Model)
+        {
+            string rowClass = t.Datum < DateTime.Now ? "prosli-termin" : "buduci-termin"; 
+
+                    <tr class="@rowClass">
+                        <td>@t.Pacijent.ImePrezime</td>
+                        <td>@t.Datum.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@t.Usluga.Naziv</td>
+                        <td>
+                            <a class="btn btn-blue" href="/Termin/Edit/@t.Id">Izmeni</a>
+                            <a class="btn btn-red delete-btn" href="/Termin/Delete/@t.Id" data-id="@t.Id">Obriši</a>
+                        </td>
+                    </tr>
+        }
+    </tbody>
+</table>
+
+<div style="margin-top: 15px;">
+    <a class="btn btn-green" href="/Termin/Create">Dodaj termin</a>
+    <a class="btn btn-green" href="/Pacijent/Dodaj">Kreiraj pacijenta</a>
+</div>
+
+@section Scripts {
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    let prikaziProsle = false;
+
+                    $("#toggleProsli").click(function () {
+                        prikaziProsle = !prikaziProsle;
+                        if (prikaziProsle) {
+                            $(".buduci-termin").hide();
+                            $(".prosli-termin").show();
+                            $(this).text("Prikaži sve termine");
+                        } else {
+                            $(".buduci-termin").show();
+                            $(".prosli-termin").show();
+                            $(this).text("Prikaži prošle termine");
+                        }
+                    });
+
+                    $(".delete-btn").click(function (e) {
+                        e.preventDefault(); // Sprečava direktno otvaranje linka
+
+                        let url = $(this).attr("href");
+                        let potvrda = confirm("Da li ste sigurni da želite da obrišete termin?");
+
+                        if (potvrda) {
+                            window.location.href = url; 
+                        }
+                    });
+                });
+            </script>
+}

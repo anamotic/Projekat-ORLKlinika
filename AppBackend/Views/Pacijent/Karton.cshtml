@@ -1,0 +1,79 @@
+﻿@model App.Domain.Pacijent
+@{
+    ViewBag.Title = "Zdravstveni karton";
+    Layout = null; 
+}
+
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zdravstveni karton</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #638163; 
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .btn-gray {
+            background-color: gray;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="body">
+    <h2 class="text-center">Zdravstveni karton</h2>
+
+    <form>
+        <div class="mb-3">
+            <label>Ime</label>
+            <input type="text" value="@Model.Ime" class="form-control" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label>Prezime</label>
+            <input type="text" value="@Model.Prezime" class="form-control" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label>Datum rođenja</label>
+            <input type="date" value="@Model.DatumRodjenja.ToString("yyyy-MM-dd")" class="form-control" readonly />
+        </div>
+
+        <hr>
+        <div class="mb-3">
+            <label>Dijagnoze</label>
+            <textarea class="form-control" readonly>@Model.ZdravstveniKarton.Dijagnoza</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label>Terapije</label>
+            <textarea class="form-control" readonly>@Model.ZdravstveniKarton.Terapije</textarea>
+        </div>
+
+        <div class="text-center">
+            <a href="/Pacijent/Index" class="btn btn-gray">Nazad</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let today = new Date().toISOString().split('T')[0];
+        document.getElementById("DatumRodjenja").setAttribute("max", today);
+    });
+</script>
+</body>
+</html>
